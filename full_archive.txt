@@ -1,0 +1,13 @@
+/media/FPIBAK/AOimager_2020-present/2020_Archive
+/media/FPIBAK/AOimager_2020-present/2021_Archive
+/media/FPIBAK/AOimager_2020-present/2022_Archive
+/media/FPIBAK/AOimager_2020-present/2023_Archive
+/media/FPIBAK/CUimager_2015-present/2015_Archive
+/media/FPIBAK/CUimager_2015-present/2016_Archive
+/media/FPIBAK/CUimager_2015-present/2017_Archive
+/media/FPIBAK/CUimager_2015-present/2018_Archive
+/media/FPIBAK/CUimager_2015-present/2019_Archive
+/media/FPIBAK/CUimager_2015-present/2020_Archive
+/media/FPIBAK/CUimager_2015-present/2021_Archive
+/media/FPIBAK/CUimager_2015-present/2022_Archive
+/media/FPIBAK/CUimager_2015-present/2023_Archive
