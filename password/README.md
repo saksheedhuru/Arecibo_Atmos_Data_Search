@@ -1,0 +1,1 @@
+In this directory, create a password.txt file with one line containing the password
