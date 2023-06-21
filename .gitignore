@@ -1,3 +1,9 @@
+# ignoring csv file
+Sakshee.csv
+
+# ignoring listing.txt file
+listing.txt
+
 password/*
 
 !password/README.md
