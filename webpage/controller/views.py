@@ -1,8 +1,28 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+import mysql.connector
+
 # import HttpResponse
 # Create your views here.
 def index(request): 
+
+    mydb = mysql.connector.connect(
+    host="localhost",
+    user="atmos",
+    password="password",
+    database="atmos_data_search"
+    )
+
+    cursor = mydb.cursor(dictionary=True)
+    # Define query
+    query = "SELECT * FROM data_archive;"
+    cursor.execute(query)
+
+    results = cursor.fetchall()
+
+    breakpoint()
+    print(mydb)
+
     context = {
 		"Years" : [2019, 2020, 2021, 2022, 2023],
         "Months" : ["January", "February", "March", "April", "May", "June",
