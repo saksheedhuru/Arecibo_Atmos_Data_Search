@@ -2,23 +2,26 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import mysql.connector
 
+password_path = "../password/password.txt"
+# Read in the first line
+with open(password_path, "r") as file_handler:
+    
+    password = file_handler.readline()
+
+
+mydb = mysql.connector.connect(
+host="localhost",
+user="atmos",
+password=password,
+database="atmos_data_search"
+)
+
 # import HttpResponse
 # Create your views here.
 def index(request): 
 
     password_path = "../password/password.txt"
-    # Read in the first line
-    with open(password_path, "r") as file_handler:
-        
-        password = file_handler.readline()
-
-
-    mydb = mysql.connector.connect(
-    host="localhost",
-    user="atmos",
-    password=password,
-    database="atmos_data_search"
-    )
+    
 
     
 
@@ -34,15 +37,9 @@ def index(request):
 
     distinct_locations_results = cursor.fetchall()
 
-    availablejan23data_query = "SELECT distinct Day FROM data_archive WHERE Year = '2023' AND Month = '1';"
-    cursor.execute(availablejan23data_query)
+    jan23_distinct_days = distinctDayOfMonth(2023, 1)
 
-    availablejan23data_results = cursor.fetchall()
     
-    jan23_dates = []
-    for date in availablejan23data_results:
-        jan23_dates.append(date["Day"])
-    jan23_dates.sort()
     years = []
     for year in distinct_years_results:
         years.append(year["Year"])
@@ -77,7 +74,7 @@ def index(request):
         # Make a list of two elements:
         # First elment is the int, representing the day
         # Second element is going to be True or False, representing if its got data
-        if day in jan23_dates:
+        if day in jan23_distinct_days:
             new_element = [day, True]
         else:
             new_element = [day, False]
@@ -95,3 +92,19 @@ def index(request):
 
 # 	# return response
 # 	return render(request, "index.html", context)
+
+# Make a function That will return a list of distinct days for a given month and year.
+def distinctDayOfMonth(year, month):
+
+    
+    cursor = mydb.cursor(dictionary=True)
+    available_data_query = f"SELECT distinct Day FROM data_archive WHERE Year = '{year}' AND Month = '{month}';"
+    cursor.execute(available_data_query)
+
+    available_data = cursor.fetchall()
+    
+    dates = []
+    for date in available_data:
+        dates.append(date["Day"])
+    dates.sort()
+    return dates
