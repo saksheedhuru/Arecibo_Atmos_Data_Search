@@ -27,9 +27,16 @@
 <table class="data" border="1">
   <tbody><tr>
   <td class="sub" width="132"><strong style="color:black">Jan</strong><br>
-    {% for janday in January_Days %}
-    {{janday}}
+    {% for janinfo in January_Days %}
+      {% if janinfo.1 == True %}
+      <a href="https://www.google.com/">{{janinfo.0}}</a>
+      {%else%}
+        {{janinfo.0}}
+      {% endif %}
+    
     {% endfor %}
+    
+
   </td>
   <td class="sub" width="132"><strong style="color:black">Feb</strong><br>
     {% for febday in February_Days %}

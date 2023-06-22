@@ -34,14 +34,25 @@ def index(request):
 
     distinct_locations_results = cursor.fetchall()
 
+    availablejan23data_query = "SELECT distinct Day FROM data_archive WHERE Year = '2023' AND Month = '1';"
+    cursor.execute(availablejan23data_query)
+
+    availablejan23data_results = cursor.fetchall()
+    
+    jan23_dates = []
+    for date in availablejan23data_results:
+        jan23_dates.append(date["Day"])
+    jan23_dates.sort()
     years = []
     for year in distinct_years_results:
         years.append(year["Year"])
+    years.sort(reverse=True)
+
 
     locations = []
     for location in distinct_locations_results:
         locations.append(location["Location"])
-
+# <a href="?location=arecibo&amp;year=2023&amp;filt=5577&amp;month=Mar&amp;day=17">17</a>
     context = {
 		"Years" : years,
         "Months" : ["January", "February", "March", "April", "May", "June", "July","August", "September", "October", "November", "December"],
@@ -59,6 +70,21 @@ def index(request):
         "December_Days" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
         "Locations" : locations
         	}
+    
+    # Iterate through each key in January_Days
+    new_jan_days = []
+    for day in context["January_Days"]:
+        # Make a list of two elements:
+        # First elment is the int, representing the day
+        # Second element is going to be True or False, representing if its got data
+        if day in jan23_dates:
+            new_element = [day, True]
+        else:
+            new_element = [day, False]
+
+        new_jan_days.append(new_element)
+    context["January_Days"] = new_jan_days
+
     # return HttpResponse("test")
 
     return render(request, "index.html", context)
