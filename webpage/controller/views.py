@@ -37,7 +37,7 @@ def index(request):
 
     distinct_locations_results = cursor.fetchall()
 
-    jan23_distinct_days = distinctDayOfMonth(2023, 1)
+    
 
     
     years = []
@@ -49,6 +49,12 @@ def index(request):
     locations = []
     for location in distinct_locations_results:
         locations.append(location["Location"])
+    
+    # sets the first year of the list as default since its the first one the user will see in the dropdown
+    default_year = years[0]
+
+    # sets the first location of the list as default since its the first one the user will see in the dropdown
+    default_location = locations[0]
 # <a href="?location=arecibo&amp;year=2023&amp;filt=5577&amp;month=Mar&amp;day=17">17</a>
     context = {
 		"Years" : years,
@@ -69,18 +75,45 @@ def index(request):
         	}
     
     # Iterate through each key in January_Days
-    new_jan_days = []
-    for day in context["January_Days"]:
-        # Make a list of two elements:
-        # First elment is the int, representing the day
-        # Second element is going to be True or False, representing if its got data
-        if day in jan23_distinct_days:
-            new_element = [day, True]
-        else:
-            new_element = [day, False]
+    # Take the months out of context
+    months_dict = {
+        "January_Days": context["January_Days"],
+        "February_Days": context["February_Days"],
+        "March_Days": context["March_Days"],
+        "April_Days": context["April_Days"],
+        "May_Days": context["May_Days"],
+        "June_Days": context["June_Days"],
+        "July_Days": context["July_Days"],
+        "August_Days": context["August_Days"],
+        "September_Days": context["September_Days"],
+        "October_Days": context["October_Days"],
+        "November_Days": context["November_Days"],
+        "December_Days": context["December_Days"]
+    }
+    
+    
+    month_num = 1
+    # iterate through each month
+    for key in months_dict.keys():
+        # get all days in current year and month that have data
+        # Save as a list of days
+        distinct_days = distinctDayOfMonth(default_year, month_num, default_location)
+        new_days = []
+        # Iterates through each day of the month
+        for day in context[key]:
+            # Make a list of two elements:
+            # First element is the int, representing the day
+            # Second element is going to be True or False, representing if its got data
 
-        new_jan_days.append(new_element)
-    context["January_Days"] = new_jan_days
+            # Assigning True or False as to whether it has data or not
+            if day in distinct_days:
+                new_element = [day, True]
+            else:
+                new_element = [day, False]
+
+            new_days.append(new_element)
+        month_num = month_num + 1
+        context[key] = new_days
 
     # return HttpResponse("test")
 
@@ -94,11 +127,11 @@ def index(request):
 # 	return render(request, "index.html", context)
 
 # Make a function That will return a list of distinct days for a given month and year.
-def distinctDayOfMonth(year, month):
+def distinctDayOfMonth(year, month, location):
 
     
     cursor = mydb.cursor(dictionary=True)
-    available_data_query = f"SELECT distinct Day FROM data_archive WHERE Year = '{year}' AND Month = '{month}';"
+    available_data_query = f"SELECT distinct Day FROM data_archive WHERE Year = '{year}' AND Month = '{month}' AND Location = '{location}';"
     cursor.execute(available_data_query)
 
     available_data = cursor.fetchall()

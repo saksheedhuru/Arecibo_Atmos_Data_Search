@@ -33,66 +33,108 @@
       {%else%}
         {{janinfo.0}}
       {% endif %}
-    
     {% endfor %}
-    
 
   </td>
   <td class="sub" width="132"><strong style="color:black">Feb</strong><br>
-    {% for febday in February_Days %}
-    {{febday}}
+    {% for febinfo in February_Days %}
+      {% if febinfo.1 == True %}
+      <a href="https://www.google.com/">{{febinfo.0}}</a>
+      {%else%}
+        {{febinfo.0}}
+      {% endif %}
     {% endfor %}
   </td>
   <td class="sub" width="132"><strong style="color:black">Mar</strong><br>
-    {% for marday in March_Days %}
-    {{marday}}
+    {% for marinfo in March_Days %}
+      {% if marinfo.1 == True %}
+      <a href="https://www.google.com/">{{marinfo.0}}</a>
+      {%else%}
+        {{marinfo.0}}
+      {% endif %}
     {% endfor %}
   <td class="sub" width="132"><strong style="color:black">Apr</strong><br>
-    {% for aprday in April_Days %}
-    {{aprday}}
+    {% for aprinfo in April_Days %}
+      {% if aprinfo.1 == True %}
+      <a href="https://www.google.com/">{{aprinfo.0}}</a>
+      {%else%}
+        {{aprinfo.0}}
+      {% endif %}
     {% endfor %}
   </td>
   </tr>
   <tr>
   <td class="sub" width="132"><strong style="color:black">May</strong><br>
-    {% for mayday in May_Days %}
-    {{mayday}}
+    {% for mayinfo in May_Days %}
+      {% if mayinfo.1 == True %}
+      <a href="https://www.google.com/">{{mayinfo.0}}</a>
+      {%else%}
+        {{mayinfo.0}}
+      {% endif %}
     {% endfor %}
   <td class="sub" width="132"><strong style="color:black">Jun</strong><br>
-    {% for junday in June_Days %}
-    {{junday}}
+    {% for juninfo in June_Days %}
+      {% if juninfo.1 == True %}
+      <a href="https://www.google.com/">{{juninfo.0}}</a>
+      {%else%}
+        {{juninfo.0}}
+      {% endif %}
     {% endfor %}
   </td>
   <td class="sub" width="132"><strong style="color:black">Jul</strong><br>
-    {% for julday in July_Days %}
-    {{julday}}
+    {% for julinfo in July_Days %}
+      {% if julinfo.1 == True %}
+      <a href="https://www.google.com/">{{julinfo.0}}</a>
+      {%else%}
+        {{julinfo.0}}
+      {% endif %}
     {% endfor %}
   </td>
   <td class="sub" width="132"><strong style="color:black">Aug</strong><br>
-    {% for augday in August_Days %}
-    {{augday}}
+    {% for auginfo in August_Days %}
+      {% if auginfo.1 == True %}
+      <a href="https://www.google.com/">{{auginfo.0}}</a>
+      {%else%}
+        {{auginfo.0}}
+      {% endif %}
     {% endfor %}
   </td>
   </tr>
   <tr>
   <td class="sub" width="132"><strong style="color:black">Sep</strong><br>
-    {% for sepday in September_Days %}
-    {{sepday}}
+    {% for sepinfo in September_Days %}
+      {% if sepinfo.1 == True %}
+      <a href="https://www.google.com/">{{sepinfo.0}}</a>
+      {%else%}
+        {{sepinfo.0}}
+      {% endif %}
     {% endfor %}
   </td>
   <td class="sub" width="132"><strong style="color:black">Oct</strong><br>
-    {% for octday in October_Days %}
-    {{octday}}
+    {% for octinfo in October_Days %}
+      {% if octinfo.1 == True %}
+      <a href="https://www.google.com/">{{octinfo.0}}</a>
+      {%else%}
+        {{octinfo.0}}
+      {% endif %}
     {% endfor %}
   </td>
   <td class="sub" width="132"><strong style="color:black">Nov</strong><br>
-    {% for novday in November_Days %}
-    {{novday}}
+    {% for novinfo in November_Days %}
+      {% if novinfo.1 == True %}
+      <a href="https://www.google.com/">{{novinfo.0}}</a>
+      {%else%}
+        {{novinfo.0}}
+      {% endif %}
     {% endfor %}
   </td>
   <td class="sub" width="132"><strong style="color:black">Dec</strong><br>
-    {% for decday in December_Days %}
-    {{decday}}
+    {% for decinfo in December_Days %}
+      {% if decinfo.1 == True %}
+      <a href="https://www.google.com/">{{decinfo.0}}</a>
+      {%else%}
+        {{decinfo.0}}
+      {% endif %}
     {% endfor %}
   </td>
   </tr>
