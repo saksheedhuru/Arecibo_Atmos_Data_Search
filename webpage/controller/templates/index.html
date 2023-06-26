@@ -3,18 +3,24 @@
 {% else %}
 <h1>Hello Sakshee</h1>
 {% endif %}
-
+<form method="post">
+  {% csrf_token %}
 <label for="Year">Select the year:</label>
 
 <select name="Year" id="Year">
-
+  <!-- Check for year.1 == ture, if so, use a tag with the seleced on it, else use the one we'er already using -->
   {% for year in Years %}
-  <option value="{{year}}">{{year}}</option>
+  <!-- If year.1 equals true then return the htnl tag with selected -->
+  {% if year.1 == True %}
+  <option value="{{year.0}}" selected>{{year.0}}</option>
+  {% else %}
+  <option value="{{year.0}}">{{year.0}}</option>
+  {% endif %}
   {% endfor %}
 
 </select>
 
-<label for="Location">Select the Location:</label>
+<label for="Location">Select the location:</label>
 
 <select name="Location" id="Location">
 
@@ -24,6 +30,14 @@
 
 </select>
 
+<label for="Wavelength">Select the wavelength:</label>
+
+<select name="Wavelength" id="Wavelength">
+  <option value=""></option>
+</select>
+
+<input type="submit">
+</form>
 <table class="data" border="1">
   <tbody><tr>
   <td class="sub" width="132"><strong style="color:black">Jan</strong><br>

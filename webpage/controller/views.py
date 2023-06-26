@@ -19,10 +19,8 @@ database="atmos_data_search"
 # import HttpResponse
 # Create your views here.
 def index(request): 
-
-    password_path = "../password/password.txt"
     
-
+# if request.method == "POST":
     
 
     cursor = mydb.cursor(dictionary=True)
@@ -49,12 +47,45 @@ def index(request):
     locations = []
     for location in distinct_locations_results:
         locations.append(location["Location"])
-    
-    # sets the first year of the list as default since its the first one the user will see in the dropdown
-    default_year = years[0]
+    # Detect if its a post
+    if request.method == "POST":
+        
+        set_year = request.POST['Year']
+        set_year = int(set_year)
+        set_location = request.POST['Location']
+        set_wavelength = request.POST['Wavelength']
 
-    # sets the first location of the list as default since its the first one the user will see in the dropdown
-    default_location = locations[0]
+        
+    # If its not a post set to default values
+    else:
+        # sets the first year of the list as default since its the first one the user will see in the dropdown
+        set_year = years[0]
+
+        # sets the first location of the list as default since its the first one the user will see in the dropdown
+        set_location = locations[0]
+
+    # change years variable to be a list of two elements:
+    
+    # [year_number, True/False]
+    # Only one year can have a True value, which indicated the selected one
+    # The year that should have the True value is the one that equals set_year
+    years_TF = []
+    
+    for year in years:
+        
+        selected = False
+        # Check if the current year being looked at is the same as set year
+        if year == set_year:
+            selected = True
+        years_TF.append([year, selected])
+    
+    years = years_TF
+    # Also propagate changes to the html, use the years to fill in dropdown, use True or False to add selected element
+
+
+    # Basically the same for location
+
+    
 # <a href="?location=arecibo&amp;year=2023&amp;filt=5577&amp;month=Mar&amp;day=17">17</a>
     context = {
 		"Years" : years,
@@ -97,7 +128,7 @@ def index(request):
     for key in months_dict.keys():
         # get all days in current year and month that have data
         # Save as a list of days
-        distinct_days = distinctDayOfMonth(default_year, month_num, default_location)
+        distinct_days = distinctDayOfMonth(set_year, month_num, set_location)
         new_days = []
         # Iterates through each day of the month
         for day in context[key]:
