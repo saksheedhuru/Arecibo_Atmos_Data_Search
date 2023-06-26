@@ -84,6 +84,17 @@ def index(request):
 
 
     # Basically the same for location
+    locations_TF = []
+    
+    for location in locations:
+        
+        selected = False
+        # Check if the current location being looked at is the same as set location
+        if location == set_location:
+            selected = True
+        locations_TF.append([location, selected])
+    
+    locations = locations_TF
 
     
 # <a href="?location=arecibo&amp;year=2023&amp;filt=5577&amp;month=Mar&amp;day=17">17</a>

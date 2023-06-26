@@ -8,9 +8,9 @@
 <label for="Year">Select the year:</label>
 
 <select name="Year" id="Year">
-  <!-- Check for year.1 == ture, if so, use a tag with the seleced on it, else use the one we'er already using -->
+  <!-- Check for year.1 == true, if so, use a tag with the seleced on it, else use the one we're already using -->
   {% for year in Years %}
-  <!-- If year.1 equals true then return the htnl tag with selected -->
+  <!-- If year.1 equals true then return the html tag with selected -->
   {% if year.1 == True %}
   <option value="{{year.0}}" selected>{{year.0}}</option>
   {% else %}
@@ -23,9 +23,14 @@
 <label for="Location">Select the location:</label>
 
 <select name="Location" id="Location">
-
+  <!-- Check for year.1 == true, if so, use a tag with the seleced on it, else use the one we're already using -->
   {% for location in Locations %}
-  <option value="{{location}}">{{location}}</option>
+  <!-- If year.1 equals true then return the html tag with selected -->
+  {% if location.1 == True %}
+  <option value="{{location.0}}" selected>{{location.0}}</option>
+  {% else %}
+  <option value="{{location.0}}">{{location.0}}</option>
+  {% endif %}
   {% endfor %}
 
 </select>
