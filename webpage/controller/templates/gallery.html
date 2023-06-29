@@ -1,7 +1,7 @@
 <!-- Load statis so that image files can be reoslved -->
 {% load static %}
 
-<h1>Hello Sakshee</h1>
+<h1>Hello {{name}}</h1>
 
 <video width="320" height="240" controls>
 <source src="{% static 'images/test/Apr0223_5577.mp4' %}" type="video/mp4">
@@ -48,3 +48,7 @@ Your browser does not support the video tag.
     </tr>
 </tbody>
 </table>
+
+{% for filepath in filepaths %}
+<p>{{filepath}}</p>
+{% endfor %}

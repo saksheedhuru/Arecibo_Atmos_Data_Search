@@ -35,6 +35,8 @@ def index(request):
 
     distinct_locations_results = cursor.fetchall()
 
+
+
     
 
     
@@ -63,6 +65,10 @@ def index(request):
 
         # sets the first location of the list as default since its the first one the user will see in the dropdown
         set_location = locations[0]
+
+        # sets empty wavelength of the list as default since its the first one the user will see in the dropdown
+        set_wavelength = ""
+
 
     # change years variable to be a list of two elements:
     
@@ -146,12 +152,16 @@ def index(request):
             # Make a list of two elements:
             # First element is the int, representing the day
             # Second element is going to be True or False, representing if its got data
+            # <a href="{% url 'next_page' %}?param1=value1&param2=value2">Go to Next Page</
+
+            # The href woulkd be: gallery?year={year_value}&month={month_value}&day={day_value}&location={location_value}
+            # Start by just changing it to gallery
 
             # Assigning True or False as to whether it has data or not
             if day in distinct_days:
-                new_element = [day, True]
+                new_element = [day, True, f"gallery?year={set_year}&month={month_num}&day={day}&location={set_location}&wavelength={set_wavelength}"]
             else:
-                new_element = [day, False]
+                new_element = [day, False, "https://www.google.com/"]
 
             new_days.append(new_element)
         month_num = month_num + 1
@@ -162,8 +172,46 @@ def index(request):
     return render(request, "index.html", context)
 
 def gallery(request):
+    # Extract year, month, day and location and save to variables
+    set_year = request.GET['year']
+    set_year = int(set_year)
+    set_month = request.GET['month']
+    set_month = int(set_month)
+    set_day = request.GET['day']
+    set_day = int(set_day)
+    set_location = request.GET['location']
+    set_wavelength = request.GET['wavelength']
+    
+    cursor = mydb.cursor(dictionary=True)
+    filepath_query = f"SELECT File_Path FROM data_archive WHERE Year = {set_year} AND Month = {set_month} AND Day = {set_day} AND Location = '{set_location}';"
+    cursor.execute(filepath_query)
+
+    filelist = []
+    filepath_results = cursor.fetchall()
+    
+    for var in filepath_results:
+        filelist.append(var['File_Path'])
+    
+    # Sort list using for loop
+    filelist.sort(key=getNum)
+    
+
+    context = {
+        "name": "Sakshee",
+        "filepaths": filelist
+    }
+    
+    
     print("Something")
-    return render(request, "gallery.html", {})
+    return render(request, "gallery.html", context)
+
+def getNum(filepath):
+    int_num = filepath.split("_")[-1]
+    int_num = int_num.split(".")[0]
+    int_num = int(int_num)
+    return int_num
+
+
 
 # # create a function
 # def geeks_view(request):
