@@ -89,10 +89,43 @@ def makeRow(filepath):
     name = name_imager[0:2]
     location = locations[name]
 
+    # Get FW_POS
+    dir_name, filename = os.path.split(filepath)
+
+    new_extension = "htm"
+    name, extension = os.path.splitext(filename)
+    htm_filename = name + "." + new_extension
+    
+    new_path = os.path.join(dir_name, htm_filename)
+
+    file_path = new_path
+
+    try:
+        file = open(file_path, "r")
+        # Perform read operations on the file
+        
+        # Or read the file line by line
+        for line in file:
+            if "FW_POS" in line:
+                next_line = file.readline()
+                wavelength_int = next_line.split('>', 1)[1].split('<', 1)[0]
+                wavelength_int = int(wavelength_int)
+        # Remember to close the file after you are done
+        file.close()
+        
+    except FileNotFoundError:
+        print("File not found:", file_path)
+        quit()
+    except IOError:
+        print("Error opening the file:", file_path)
+        quit()
+
+
     # Create a new row
-    new_row = {'Year': year, 'Month': month, 'Day': day, 'Location': location, 'FilePath': filepath}
+    new_row = {'Year': year, 'Month': month, 'Day': day, 'Location': location, 'FilePath': filepath, 'Wavelength': wavelength_int}
 
     return new_row
+
 
 main()
 

@@ -1,3 +1,7 @@
+# ignoring photos folder
+photos
+!photos/README.md
+
 # ignoring csv file
 Sakshee.csv
 
