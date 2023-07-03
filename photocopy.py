@@ -43,7 +43,7 @@ with open(csv_file_path, "r") as file_handler:
 
     for line in file_handler:
         line_split = line.split(",")
-        file_path = line_split[4]
+        file_path = line_split[5]
         rel_path = file_path.replace(base_dir, "")
         output_path = os.path.join(photos_dir_path, rel_path)
         directory_name, filename = os.path.split(output_path)
