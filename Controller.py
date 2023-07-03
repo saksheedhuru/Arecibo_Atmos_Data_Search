@@ -31,7 +31,7 @@ def main():
         line = line[0:-1]
         directories.append(line)
     
-    column_names = ['Year', 'Month', 'Day', 'FilePath']
+    column_names = ['Year', 'Month', 'Day', 'FilePath', 'Wavelength']
     df = pd.DataFrame(columns=column_names)
     for directory in directories:
         
