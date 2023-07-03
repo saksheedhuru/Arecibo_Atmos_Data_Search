@@ -17,7 +17,6 @@ def delete_directory_contents(output_path):
 def copy_file(file_path, output_path):
     try:
         shutil.copy2(file_path, output_path)
-        print(f"File copied successfully.")
     except FileNotFoundError:
         print(f"Source file '{file_path}' not found.")
     except IOError as e:
@@ -38,8 +37,6 @@ if delete_data.lower() == "yes":
     file_name_path = os.path.join(photos_dir_path, file_name)
     with open(file_name_path, 'w') as file:
         file.write('# My Readme File\n\nThis is my readme file.')
-
-    breakpoint()
         
 with open(csv_file_path, "r") as file_handler:
     next(file_handler)  # Skip the first line
