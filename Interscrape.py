@@ -3,14 +3,15 @@ import multiprocessing as mp
 import os
 import subprocess
 import time
+from astropy.io import fits
 
 abbr_months =["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
 years = ["2020", "2021", "2022", "2023"]
 locations = {"ao": 'Arecibo Observatory', "cu": 'Culebra'}
 
-listing_path = "listing.txt"
-full_archive_path = "full_archive.txt"
-csv_file_path = "Sakshee.csv"
+listing_path = "Interferometer_listing.txt"
+full_archive_path = "Interferometer_full_archive.txt"
+csv_file_path = "Interferometer.csv"
 run_find = True
 def main():
     # Example find command: 
@@ -34,7 +35,7 @@ def main():
     total_dict_list = []
     for directory in directories:
         
-        command = f"find {directory} -type f -name '*sk_*.jpg' -not -name '*thumb*' > {listing_path}"
+        command = f"find {directory} -type f -name '*sk *.fit' -not -name '*thumb*' > {listing_path}"
         print("Running find command ...")
         if run_find == True:
             subprocess.run(command, shell=True)
@@ -57,9 +58,12 @@ def main():
                 # df = df.append(row, ignore_index=True)
                 i = i + 1
 
-                if i % 10000 == 0:
+                if i % 1000 == 0:
                     # submit whatever is in args_list
                     results = pool.map(makeRow, args_list)
+                    # results = []
+                    # for arg in args_list:
+                    #     results.append(makeRow(arg))
                     # Add the results to df
                     total_dict_list.extend(results)
                     # reset args_list
@@ -74,6 +78,9 @@ def main():
             if args_list != []:
                 # If it is not an empty list, submit through multiprocessing, submit whatever is in args_list
                 results = pool.map(makeRow, args_list)
+                # results = []
+                # for arg in args_list:
+                #     results.append(makeRow(arg))
                 # Add the results to df
                 total_dict_list.extend(results)
                 # reset args_list
@@ -107,40 +114,12 @@ def makeRow(filepath):
     name = name_imager[0:2]
     location = locations[name]
 
-    # Get FW_POS
-    dir_name, filename = os.path.split(filepath)
-
-    new_extension = "htm"
-    name, extension = os.path.splitext(filename)
-    htm_filename = name + "." + new_extension
-    
-    new_path = os.path.join(dir_name, htm_filename)
-
-    file_path = new_path
-
-    try:
-        file = open(file_path, "r")
-        # Perform read operations on the file
-        
-        # Or read the file line by line
-        for line in file:
-            if "FW_POS" in line:
-                next_line = file.readline()
-                wavelength_int = next_line.split('>', 1)[1].split('<', 1)[0]
-                wavelength_int = int(wavelength_int)
-        # Remember to close the file after you are done
-        file.close()
-        
-    except FileNotFoundError:
-        print("File not found:", file_path)
-        wavelength_int = -1
-    except IOError:
-        print("Error opening the file:", file_path)
-        wavelength_int = -1
-
+    # Get FW_POS in fit file from hdul header in astropy
+    hdul = fits.open(filepath)
+    wavelength = hdul[0].header["FW_POS"]
 
     # Create a new row
-    new_row = {'Year': year, 'Month': month, 'Day': day, 'Location': location, 'FilePath': filepath, 'Wavelength': wavelength_int}
+    new_row = {'Year': year, 'Month': month, 'Day': day, 'Location': location, 'FilePath': filepath, 'Wavelength': wavelength}
 
     return new_row
 

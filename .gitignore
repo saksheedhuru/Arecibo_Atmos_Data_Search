@@ -6,6 +6,10 @@ photos/*
 Sakshee.csv
 
 # ignoring listing.txt file
+Interferometer.csv
+
+Interferometer_listing.txt
+
 listing.txt
 
 password/*
