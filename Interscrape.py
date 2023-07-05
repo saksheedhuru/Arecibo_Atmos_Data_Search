@@ -115,11 +115,17 @@ def makeRow(filepath):
     location = locations[name]
 
     # Get FW_POS in fit file from hdul header in astropy
-    hdul = fits.open(filepath)
+    hdul = None
     try:
-        wavelength = hdul[0].header["FW_POS"]
+        hdul = fits.open(filepath)
     except:
         wavelength = -1
+    
+    if hdul != None:
+        try:
+            wavelength = hdul[0].header["FW_POS"]
+        except:
+            wavelength = -2
 
     # Create a new row
     new_row = {'Year': year, 'Month': month, 'Day': day, 'Location': location, 'FilePath': filepath, 'Wavelength': wavelength}
