@@ -38,7 +38,15 @@
 <label for="Wavelength">Select the wavelength:</label>
 
 <select name="Wavelength" id="Wavelength">
-  <option value=""></option>
+  <!-- Check for wavelength.1 == true, if so, use a tag with the seleced on it, else use the one we're already using -->
+  {% for wavelength in Wavelengths %}
+  <!-- If wavelength.1 equals true then return the html tag with selected -->
+  {% if wavelength.1 == True %}
+  <option value="{{wavelength.0}}" selected>{{wavelength.0}}</option>
+  {% else %}
+  <option value="{{wavelength.0}}">{{wavelength.0}}</option>
+  {% endif %}
+  {% endfor %}
 </select>
 
 <input type="submit">

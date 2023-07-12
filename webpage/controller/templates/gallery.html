@@ -1,14 +1,30 @@
-<!-- Load statis so that image files can be reoslved -->
+<!-- Load statis so that image files can be resolved -->
 {% load static %}
 
 <h1>Hello {{name}}</h1>
+
+<style>
+</style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var hoverImage = document.querySelector('.hover-image');
+
+      hoverImage.addEventListener('mouseover', function() {
+        this.classList.add('enlarged');
+      });
+
+      hoverImage.addEventListener('mouseout', function() {
+        this.classList.remove('enlarged');
+      });
+    });
+  </script>
 
 <video width="320" height="240" controls>
 <source src="{% static 'images/test/Apr0223_5577.mp4' %}" type="video/mp4">
 Your browser does not support the video tag.
 </video>
 
-<table>
+<!-- <table>
     <tbody>
 <tr>
 <td>
@@ -47,6 +63,23 @@ Your browser does not support the video tag.
     </td>
     </tr>
 </tbody>
+</table> -->
+
+<table>
+    <tbody>
+      {% for grouped_filepaths in filepaths %}
+        <tr>
+          {% for filepath in grouped_filepaths %}
+          <td>
+            <a href="{% static filepath %}" download>
+              <img src="{% static filepath %}" class="hover-image" height="150" width="auto">
+            </a>
+            <br>
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}        
+    </tbody>
 </table>
 
 {% for filepath in filepaths %}
