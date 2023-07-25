@@ -2,8 +2,9 @@
 photos/*
 !photos/README.md
 
-# ignoring csv file
+# ignoring csv files
 Sakshee.csv
+Movies.csv
 
 # ignoring listing.txt file
 Interferometer.csv
