@@ -203,17 +203,18 @@ def gallery(request):
     set_wavelength = request.GET['wavelength']
     
     cursor = mydb.cursor(dictionary=True)
-    filepath_query = f"SELECT File_Path FROM Sky_Imager WHERE Year = {set_year} AND Month = {set_month} AND Day = {set_day} AND Location = '{set_location}';"
+    filepath_query = f"SELECT FilePath FROM Sky_Imager WHERE Year = {set_year} AND Month = {set_month} AND Day = {set_day} AND Location = '{set_location}' AND Wavelength = {set_wavelength};"
     cursor.execute(filepath_query)
 
     filelist = []
     filepath_results = cursor.fetchall()
     
     for var in filepath_results:
-        filelist.append(var['File_Path'])
+        filelist.append(var['FilePath'])
     
     # Sort list using for loop
     filelist.sort(key=getNum)
+
     
     rel_filelist = []
 
@@ -222,9 +223,16 @@ def gallery(request):
         rel_filelist.append(rel_path)
     
     grouped_rel_filelist = transform_to_groups_of_four(rel_filelist)
+    
+    movie_filepath = distinctMoviePath(set_year, set_month, set_day, set_location, set_wavelength)
+    
+    if type(movie_filepath) == type(-1):
+        movie_filepath = False
+
     context = {
         "name": "Sakshee",
-        "filepaths": grouped_rel_filelist
+        "filepaths": grouped_rel_filelist,
+        "movie": movie_filepath
     }
     
     
@@ -261,8 +269,6 @@ def getNum(filepath):
 
 # Make a function That will return a list of distinct days for a given month and year.
 def distinctDayOfMonth(year, month, location, wavelength):
-
-    
     cursor = mydb.cursor(dictionary=True)
     available_data_query = f"SELECT distinct Day FROM Sky_Imager WHERE Year = '{year}' AND Month = '{month}' AND Location = '{location}' AND Wavelength  = '{wavelength}';"
     cursor.execute(available_data_query)
@@ -274,3 +280,23 @@ def distinctDayOfMonth(year, month, location, wavelength):
         dates.append(date["Day"])
     dates.sort()
     return dates
+
+# Make a function That will return the movie for a given YMD location and wavelength
+def distinctMoviePath(year, month, day, location, wavelength):
+    cursor = mydb.cursor(dictionary=True)
+    available_data_query = f"SELECT distinct FilePath FROM Movies WHERE Year = '{year}' AND Month = '{month}' AND Day = '{day}' AND Location = '{location}' AND Wavelength  = '{wavelength}';"
+    cursor.execute(available_data_query)
+
+    available_data = cursor.fetchall()
+    
+    movies = []
+    for movie in available_data:
+        movies.append(movie["FilePath"])
+    movies.sort()
+    if movies == []:
+        print(f"Movie not found in {year}, {month}, {day}, {location}, {wavelength}")
+        return -1
+    if len(movies) > 1:
+        print(f"More than one movie found in {year}, {month}, {day}, {location}, {wavelength}")
+        return -2
+    return movies[0]
