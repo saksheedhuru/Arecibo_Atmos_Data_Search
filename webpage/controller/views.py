@@ -424,7 +424,39 @@ def interferometer_calendar(request):
     return render(request, "interferometer_calendar.html", context)
 
 def interferometer_files(request):
-    context = {}
+    # 1. get all filepaths for the given YMDLW
+    # 2. set those as a list of string to a variable
+    # 3. Send that to html through context variable
+    mydb = mysql.connector.connect(
+    host="localhost",
+    user="atmos",
+    password=password,
+    database="atmos_data_search"
+    )
+    set_year = request.GET['year']
+    set_year = int(set_year)
+    set_month = request.GET['month']
+    set_month = int(set_month)
+    set_day = request.GET['day']
+    set_day = int(set_day)
+    set_location = request.GET['location']
+    set_wavelength = request.GET['wavelength']
+    
+    cursor = mydb.cursor(dictionary=True)
+    filepath_query = f"SELECT FilePath FROM Interferometer WHERE Year = {set_year} AND Month = {set_month} AND Day = {set_day} AND Location = '{set_location}' AND Wavelength = {set_wavelength};"
+    cursor.execute(filepath_query)
+
+    filelist = []
+    filepath_results = cursor.fetchall()
+    
+    for var in filepath_results:
+        filelist.append(var['FilePath'])
+    
+    filelist.sort(key=getNumSpace)
+
+    context = {
+        "filelist": filelist
+    }
 
     return render(request, "interferometer_files.html", context)
 
@@ -448,6 +480,11 @@ def getNum(filepath):
     int_num = int(int_num)
     return int_num
 
+def getNumSpace(filepath):
+    int_num = filepath.split("sk ")[-1]
+    int_num = int_num.split(".")[0]
+    int_num = int(int_num)
+    return int_num
 
 
 # # create a function
@@ -480,6 +517,12 @@ def distinctDayOfMonth(year, month, location, wavelength, table_name):
 
 # Make a function That will return the movie for a given YMD location and wavelength
 def distinctMoviePath(year, month, day, location, wavelength):
+    mydb = mysql.connector.connect(
+    host="localhost",
+    user="atmos",
+    password=password,
+    database="atmos_data_search"
+    )
     cursor = mydb.cursor(dictionary=True)
     available_data_query = f"SELECT distinct FilePath FROM Movies WHERE Year = '{year}' AND Month = '{month}' AND Day = '{day}' AND Location = '{location}' AND Wavelength  = '{wavelength}';"
     cursor.execute(available_data_query)

@@ -1,36 +1,40 @@
 <!-- Load statis so that image files can be resolved -->
 {% load static %}
 
-<h1>Hello {{name}}</h1>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var hoverImage = document.querySelector('.hover-image');
 
-<style>
-</style>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var hoverImage = document.querySelector('.hover-image');
-
-      hoverImage.addEventListener('mouseover', function() {
-        this.classList.add('enlarged');
-      });
-
-      hoverImage.addEventListener('mouseout', function() {
-        this.classList.remove('enlarged');
-      });
+    hoverImage.addEventListener('mouseover', function() {
+      this.classList.add('enlarged');
     });
-  </script>
+
+    hoverImage.addEventListener('mouseout', function() {
+      this.classList.remove('enlarged');
+    });
+  });
+</script>
+
+<h1>Explore the Image gallery!</h1>
 
 
-<h1><a href="/">Home</a></h1>
 
-{% if movie_filepath == False %}
-<p>Movie not Available.</p>
+
+<h1><a href="/">Back to the Sky Imager Calendar</a></h1>
+
+{% if movie_filepath %}
+<video width="320" height="240" controls>
+  <source src="{% static movie %}" type="video/mp4">
+  
+  Your browser does not support the video tag.
+  </video>
+
 
 {% else %}
-<video width="320" height="240" controls>
-<source src="{% static movie %}" type="video/mp4">
-
-Your browser does not support the video tag.
-</video>
+<br>
+<h3>No Movie Available.</h3>
+<br>
+<br>
 {% endif %}
 
 
