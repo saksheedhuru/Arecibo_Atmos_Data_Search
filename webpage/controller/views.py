@@ -239,7 +239,6 @@ def gallery(request):
 
     if type(movie_filepath) == type(-1):
         movie_filepath = False
-    breakpoint()
     context = {
         "name": "Sakshee",
         "filepaths": grouped_rel_filelist,
