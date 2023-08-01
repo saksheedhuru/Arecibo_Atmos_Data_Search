@@ -233,9 +233,13 @@ def gallery(request):
     
     movie_filepath = distinctMoviePath(set_year, set_month, set_day, set_location, set_wavelength)
     
+    # # Add static to the path
+    # if type(movie_filepath) == type(""):
+    #     movie_filepath = "/static/" + movie_filepath
+
     if type(movie_filepath) == type(-1):
         movie_filepath = False
-
+    breakpoint()
     context = {
         "name": "Sakshee",
         "filepaths": grouped_rel_filelist,

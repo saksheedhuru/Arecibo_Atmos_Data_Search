@@ -22,7 +22,7 @@
 
 <h1><a href="/">Back to the Sky Imager Calendar</a></h1>
 
-{% if movie_filepath %}
+{% if not movie_filepath %}
 <video width="320" height="240" controls>
   <source src="{% static movie %}" type="video/mp4">
   
